@@ -18,8 +18,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "bcab98d01ac02f76",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Woogi's/데이터 분석 및 시각화 3.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -85,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Woogi's/데이터 분석 및 시각화 2.md",
+                "file": "Woogi's/데이터 분석 및 시각화 3.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Woogi's/데이터 분석 및 시각화 2.md",
+                "file": "Woogi's/데이터 분석 및 시각화 3.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Woogi's/데이터 분석 및 시각화 2.md"
+                "file": "Woogi's/데이터 분석 및 시각화 3.md"
               }
             }
           }
@@ -146,9 +159,10 @@
       "command-palette:명령어 팔레트 열기": false
     }
   },
-  "active": "f9e722348de346af",
+  "active": "bcab98d01ac02f76",
   "lastOpenFiles": [
     "Woogi's/데이터 분석 및 시각화 1.md",
+    "Woogi's/데이터 분석 및 시각화 3.md",
     "Woogi's/데이터 분석 및 시각화 2.md",
     "무제 파일.md"
   ]
