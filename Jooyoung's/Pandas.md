@@ -340,3 +340,245 @@ df['SW특기'].count()
 df['학교'].unique() #중복을 제외한 데이터
 df['학교'].nuniaue() #중복을 제외한 데이터의 개수s
 ```
+
+--- 
+# 6. 데이터 선택(기본)
+
+## Column 선택
+```pyhon
+df['키]
+df['이름']
+df[['이름', '키']]
+```
+
+## Column 선택(정수 Index)
+```python
+print(df.columns[0])
+# 이름
+print(df[df.columns[0]])
+# == df['이름']
+```
+
+## 슬라이싱
+```python
+df['영어'][0:4]
+#0~4까지 영어 점수 데이터 가져옴
+```
+
+--- 
+# 7. 데이터 선택(loc)
+- 이름을 이용하여 원하는 row에서 원하는 col선택
+
+```python
+df.loc['1번']
+# 1번(index)값의 모든 row가져옴
+
+df.loc['1번', '국어']
+#index 1번에 해상하는 국어 데이터
+
+df.loc[['1번', '2번'], '영어']
+#index 1,2번에 해당하는 영어 데이터
+
+df.loc[['1번', '2번'], ['영어', '수학']]
+#index 1,2번에 해당하는 영어,수학 데이터
+
+df.loc['1번':'5번', '국어':'사회']
+#index 1번부터 5번까지, 국어부터 사회까지
+#슬라이싱과 다르게 마지막 포함
+```
+
+--- 
+# 8. 데이터 선택(iloc)
+- 위치(정수)를 이용하여 원하는 row에서 원하는 col 선택
+
+```python
+df.iloc[0]
+#0 번째 위치의 데이터(row)
+
+df.iloc[0:5]
+#0~4번째 위치의 데이터
+
+df.iloc[0, 1]
+#0번째 위치의 1번째(학교) 데이터
+
+df.iloc[4, 2]
+#5번학생의 키 데이터
+
+df.iloc[[0,1], [2]]
+#0,1번째위치의 학생의 2번째(키)데이터 
+
+df.iloc[0:5, 3:8]
+#0~4번째 위치의 학생중에서, 3~7번째 데이터
+```
+
+--- 
+# 9. 데이터 선택(조건)
+- 조건에 해당하는 데이터 선택
+
+```python
+df['키'] >= 185
+#학생들의 키가 185이상이지 여부를 True/False로 알려줌
+
+filt = (df['키'] >= 185)
+print(df[filt])
+#키가 185이상인 데이터만 가져옴
+print(df[~filt])
+#filt를 역으로 적용
+
+df.loc[df['키'] >= 185, '수학']
+#키가 185잇앙인 학생들의 수학데이터
+```
+
+## 다양한 조건
+### & 그리고
+```python
+df.loc[df['키'] >= 185 & df['학교'] == '북산고']
+#키가 185이상인 북산고 학생 데이터
+```
+
+### | 또는
+```python
+df.loc[(df['키'] < 170) | df['키'] > 200]
+#키가 170미만이거나 키가 200초과인 학생데이터
+```
+
+### str 함수
+```python
+filt = df['이름'].str.startwith('송')
+print(df[filt])
+# '송'씨 성을 가진 사람
+
+filt = df['이름'].str.contiains('태')
+print(df[filt])
+#이름에 태가 들어가는 사람
+
+langs = ['Python', 'Java']
+filt = df['SW특기'].isin(langs)
+#sw 특기가 python이거나 java인 사람
+#문자열이 완벽히 일치해야만 가져옴(대소문자 구분)
+
+langs = ['python', 'java']
+filt = df['SW특기'].str.lower().isin(langs)
+#소문자로 변환후 비교
+
+df['SW특기'].str.contains('java', na=True)
+#Nan 데이터(없는 데이터)에 대해서 True 적용
+```
+
+--- 
+10. 결측치
+- 비어있는 데이터(NaN)
+
+## 데이터 채우기 fillna
+```python
+df.fillna('', inplace=True)
+#모든 NaN데이터를 빈칸으로 채움
+
+df['SW특기'].fillna('없음', inplace=True)
+#SW특기 Col의 데이터의 NaN만 채움
+```
+
+## 데이터 제외하기 dropna
+```python
+df.dropna()
+#전체 데이터 중에서 NaN을 포함하는 데이터 삭제
+```
+
+- axis : index or column
+    - index : NaN이 포함된 row를 지움
+    - columns : NaN이 포함된 column을 지움
+- how : any or all
+    - any : NaN이 하나라도 있으면 지움
+    - all : 모든 칸이 NaN이어야 지움
+```python
+df.dropna(axis='index', how='any')
+#NaN이 하나라도 있는 row지움
+```
+
+--- 
+# 11. 데이터 정렬
+
+```python
+df.sort_values("키")
+#키순으로 오름차순 정렬
+
+df.sort_values('키', ascending=False)
+#키순으로 내림차순 정렬
+
+df.sort_values(['수학', '영어'], ascending=False)
+#수학점수로 내림차순 정렬하다가 같으면 영어 점수로 내림차순 정렬
+
+df.sort_values(['수학', '영어'], ascending=[True, False])
+#수학점수는 오름차순, 영어점수는 내림차순으로 정렬
+
+df.sort_index()
+#index를 기준으로 오름차순 정렬
+```
+
+--- 
+# 12. 데이터 수정
+
+## Column 수정
+```python
+df['학교'].replace({'북산고':'상북고', '능담고':'무슨고'}, inplcae=True)
+#학교 col의 북산고를 상북고로 능담고를 무슨고로 바꿈
+
+df['SW특기'] = df['SW특기'].str.lower()
+#sw특기의 모든 col을 소문자로 바꿈
+
+df['학교'] = df['학교'] + '등학교'
+#학교데이터 + 등학교
+```
+
+## Column 추가
+```python
+df['총합'] = df['국어'] + df['영어']
+#없는 col은 알아서 추가함
+
+df['결과'] = 'Fail'
+#결과 col을 추가하고 전체 데이터는 Fail 로 초기화
+df.loc[df['총합'] > 400, '결과', 'Pass']
+#총합이 400보다 큰 데이터에 대해서 결과를 Pass로 업데이트
+```
+
+## Column 삭제
+```python
+df.drop(columns=['총합','영어'])
+#총합, 영어 col을 삭제
+```
+
+## row 삭제
+```python
+df.drop(index='4번')
+#4번 학생 데이터 row를 삭제
+
+filt = df['수학'] < 80
+df.drop(index=df[filt].index)
+#수학 점수가 80미만인 row 전부 지움
+```
+
+## row 추가
+```python
+df.loc['9번'] = ['이정환', '해남고등학교', 184, 90,90,90,90,90,'Kotlin', 450, 'Pass']
+#새로운 row추가
+```
+
+## Cell 수정
+```python
+df.loc['4번', 'SW특기'] = 'Python'
+#4번학생의 특기를 python으로 변경
+
+df.loc['5번', ['학교', 'SW특기']] = ['능담고등학교', 'C']
+#5번학생의 학교는 능담고등학교, 특기는 C로 변경
+```
+
+## Column순서 변경
+```python
+cols = list(df.columns)
+df = df[[cols[-1]] + cols[0:-1]]
+```
+
+## Column 이름 변경
+```python
+df.columns = ['Result', 'Name', 'School']
+```
