@@ -466,7 +466,8 @@ df['SW특기'].str.contains('java', na=True)
 ```
 
 --- 
-10. 결측치
+
+# 10. 결측치
 - 비어있는 데이터(NaN)
 
 ## 데이터 채우기 fillna
@@ -582,3 +583,51 @@ df = df[[cols[-1]] + cols[0:-1]]
 ```python
 df.columns = ['Result', 'Name', 'School']
 ```
+
+--- 
+# 13. 함수 적용
+
+## 데이터에 함수 적용(apply)
+```python
+#키 뒤에 cm를 붙이는 역할
+def add_cm(height):
+	return str(height) + 'cm'
+
+df['키'] = df['키'].apply(add_cm)
+#키 데이터에 대해서 add_cm 함수를 호출한 결과 데이터를 반영
+```
+
+```python
+def capitalize(lang):
+	if pd.notnull(lang): #NaN인지 아닌지
+		return lang.capitalize() #첫글자는 대문자로 나머지는 소문자로
+
+df['SW특기'] = df['SW특기'].apply(capitalize)
+```
+
+--- 
+# 14. 그룹화
+- 동일한 값을 가진 것들끼리 합쳐서 통계 또는 평균등의 값을 계산하기 위해 사용
+```python
+df.groupby('학교').get_group('능담고')
+df.groupby('학교').mean() #계산 가능한 데이터들의 평균값
+df.groupby('학교').size() #각 그룹의 크기
+df.groupby('학교').size()['능담고'] #학교로 그룹하를 한 뒤에 능담고에 해당하는 데이터의 수
+df.groupby('학교')['키'].mean() #학교로 그룹화를 한 뒤에 키의 평균데이터
+df.groupby('학교')[['국어', '수학', '영어']].mean() #학교로 그룹화를 한 뒤에 국어, 여어 수학 평균 데이터
+```
+
+```python
+df.groupby(['학교', '학년']).mean() #학교별, 학년별 평균 데이터
+```
+
+```python
+school = df.groupby('학교')
+school['학년'].value_counts().loc['능담고']
+#학교로 그룹화를 한뒤에 북산고에 대해서 학년별 학생 수를 가져옴
+
+school['학년'].value_counts(normalize=True).loc['능담고']
+#학생들의 수 데이터를 퍼센트로 비교하여 가져옴
+```
+
+--- 
